@@ -38,6 +38,11 @@ if [[ ! -d predictions ]]; then
 		mkdir predictions/$model;
 		for dataset in sst_fine sst_binary opener sentube_auto sentube_tablets semeval; do
 			mkdir predictions/$model/$dataset;
+			if [ "$model" = "lstm" ] || [ "$model" = "bilstm" ] || [ "$model" = "cnn" ]; then
+				for i in 1 2 3 4 5; do
+					mkdir predictions/$model/$dataset/run$i;
+				done;
+			fi
 		done;
 	done;
 fi
@@ -50,13 +55,14 @@ fi
 cd embeddings
 
 # Duyu Tang's Twitter-specific Sentiment Embeddings
-wget http://ir.hit.edu.cn/~dytang/paper/sswe/embedding-results.zip
-unzip embedding-results.zip
+# wget http://ir.hit.edu.cn/~dytang/paper/sswe/embedding-results.zip
+# unzip embedding-results.zip
 rm embedding-results.zip
 rm embedding-results/sswe-h.txt
 rm embedding-results/sswe-r.txt
 mv embedding-results/sswe-u.txt .
 rm -r embedding-results
+cd ..
 
 
 # Get Wikipedia embeddings
@@ -67,4 +73,3 @@ rm -r embedding-results
 # Run Experiments
 
 python3 bow_log_reg.py -output results/results.txt
-python3

@@ -50,7 +50,8 @@ class MyMetrics:
             precision = self.precision()
             recall = self.recall()
             f1 = self.f1()
-        return [precision, recall, f1]
+        acc = self.accuracy()
+        return [acc, precision, recall, f1]
     
     def get_3_decimals(self, X):
         return [int(x * 1000 + .5) / 1000 for x in X]

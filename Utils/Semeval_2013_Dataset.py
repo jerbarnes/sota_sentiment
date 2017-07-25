@@ -1,12 +1,19 @@
 import numpy as np
 import sys, os
 import argparse
-sys.path.append('/home/jeremy/NS/Keep/Permanent/Tools/twitter_nlp/python/')
-from twokenize import *
+from Utils.twokenize import *
 from Utils.WordVecs import *
 from Utils.Representations import *
 
+
 def conv_tweet(tweet, word_vecs):
+    """
+    Returns a concatenation of max, min and average
+    vectors for the words in a tweet, following
+    Tang et al. Learning Sentiment-Specific Word Embedding
+    for Twitter Sentiment Classification
+    """
+
     rep = []
     for w in words(tweet, word_vecs):
         try:
@@ -22,9 +29,16 @@ def conv_tweet(tweet, word_vecs):
     return np.concatenate((maxv, minv, avev))
 
 def words(sentence, model):
+    """
+    Returns the tokenized sentence after
+    having removed mentions and urls.
+    """
     return rem_mentions_urls(tokenize(sentence.lower()))
 
 def rem_mentions_urls(tokens):
+    """
+    Replaces any mentions with 'at' and any url with 'url'.
+    """
     final = []
     for t in tokens:
         if t.startswith('@'):
@@ -36,10 +50,23 @@ def rem_mentions_urls(tokens):
     return final
 
 class Semeval_Dataset():
+    """
+    This class converts the annotated SemEval 2013 task 2 data, which
+    was previously downloaded, into an abstract dataset class, which
+    the classifiers use.
 
-    def __init__(self, DIR, model, one_hot=True,
-                 dtype=np.float32, rep=ave_vecs,
-                 binary=False):
+    DIR:    The directory where the files train.tsv, dev.tsv, and test.tsv are found.
+    model:  The WordVec model, which holds the word embeddings to be tested.
+    one_hot:If True, the y labels will be a one-hot vector (for use with Keras models),
+            otherwise, it will just be the class label.
+    binary: If True, only positive and negative examples will be used,
+            otherwise, positive, neutral, and negative examples are included.
+    rep:    The representation of an example, i.e. ave_vecs, sum_vecs, conv_tweet, words, etc.
+
+    """
+
+    def __init__(self, DIR, model, one_hot=True, 
+                 binary=False, rep=ave_vecs):
 
         self.rep = rep
         self.one_hot = one_hot
@@ -75,10 +102,13 @@ class Semeval_Dataset():
             else:
                 return 2
 
-
     def open_data(self, DIR, model, rep):
-
-        i = 0
+        """
+        Opens the data from DIR and changes the instances
+        to the representation determined by rep and model.
+        Finally, these are split into train, dev, and test
+        splits.
+        """
 
         train = []
         for line in open(os.path.join(DIR, 'train.tsv')):
@@ -88,7 +118,7 @@ class Semeval_Dataset():
                     pass
                 else:
                     train.append((label, tweet))
-            else:   
+            else:
                 train.append((label, tweet))
 
         dev = []
