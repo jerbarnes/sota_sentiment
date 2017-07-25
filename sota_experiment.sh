@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 """
 This script runs the best models from the paper accepted in
 the 2017 WASSA workshop: Assessing State-of-the-art Sentiment Models on 
@@ -10,19 +9,7 @@ and Sabine Schulte im Walde.
 The embeddings used are available at:
 http://www.ims.uni-stuttgart.de/forschung/ressourcen/experiment-daten/sota-sentiment.html
 
-If you use the code or resources, please cite the following paper:
-
-bib:
-
-@inproceedings{Barnes2017,
-  author = {Barnes, Jeremy and Klinger, Roman and Schulte im Walde, Sabine},
-  title = {Assessing State-of-the-Art Sentiment Models on State-of-the-Art Sentiment Datasets},
-  booktitle = {Proceedings of the 8th Workshop on Computational
-                  Approaches to Subjectivity, Sentiment and Social
-                  Media Analysis},
-  year = {2017},
-  address = {Copenhagen, Denmark}
-}
+If you use the code or resources, please cite the paper.
 """
 
 
@@ -65,11 +52,14 @@ rm -r embedding-results
 cd ..
 
 
-# Get Wikipedia embeddings
+# Get Wikipedia, Google and Retrofit embeddings
 # Currently, download them and add them manually
 
 
 
 # Run Experiments
 
-python3 bow_log_reg.py -output results/results.txt
+python3 bow.py -output results/results.txt
+python3 ave.py -emb embeddings/google.txt -output results/results.txt
+python3 retrofit.py -emb embeddings/retrofit.txt -output results/results.txt
+python3 joint.py -emb emeddings/sswe-u.txt -file_type tang -output results/results.txt

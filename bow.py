@@ -49,12 +49,14 @@ def test():
                                      rep=words)
 
 
-    sentube_auto_dataset = SenTube_Dataset('datasets/SenTube/automobiles_EN',
+    sentube_auto_dataset = General_Dataset('datasets/SenTube/auto',
                                            None, rep=words,
+                                           binary=True,
                                            one_hot=False)
 
-    sentube_tablets_dataset = SenTube_Dataset('datasets/SenTube/tablets_EN',
+    sentube_tablets_dataset = General_Dataset('datasets/SenTube/tablets',
                                               None, rep=words,
+                                              binary=True,
                                               one_hot=False)
 
     semeval_dataset = Semeval_Dataset('datasets/twitter',

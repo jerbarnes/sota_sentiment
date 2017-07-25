@@ -1,4 +1,5 @@
 #Assessing State-of-the-art Sentiment Models on State-of-the-art Sentiment Datasets
+
 Jeremy Barnes jeremy.barnes@upf.edu / barnesjy@ims.uni-stuttgart.de
 
 This experiment runs the best models with the best embeddings
@@ -42,6 +43,7 @@ Each vector file should have one word vector per line as follows (space delimite
 ```the -1.0 2.4 -0.3 ...```
 
 ###Running the program
+
 make sure that sota_experiment is executable (chmod +x sota_experiment).
 
 ./sota_experiment.sh
@@ -49,6 +51,7 @@ make sure that sota_experiment is executable (chmod +x sota_experiment).
 ###Output
 
 ###Reference
+
 @inproceedings{Barnes2017,
   author = {Barnes, Jeremy and Klinger, Roman and Schulte im Walde, Sabine},
   title = {Assessing State-of-the-Art Sentiment Models on State-of-the-Art Sentiment Datasets},
