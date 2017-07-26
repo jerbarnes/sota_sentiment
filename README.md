@@ -25,8 +25,8 @@ models on 6 datasets.
 ### Requirements
 
 1. Python 3
-2. tabulate (pip install tabulate)
-3. sklearn  (pip install -U scikit-learn)
+2. tabulate ```pip install tabulate```
+3. sklearn  ```pip install -U scikit-learn```
 4. Keras with Theano backend (could work with Tensorflow, but it hasn't been tested)
 5. [Twitter NLP](https://github.com/aritter/twitter_nlp) (included)
 
