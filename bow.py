@@ -126,7 +126,7 @@ def print_results(out_file):
     if out_file:
         with open(out_file, 'a') as f:
             f.write('\n')
-            f.write('+++Bag-of-words with L2 regularized Logistic Regression+++\n')
+            f.write('+++Bag-of-words+++\n')
             f.write(table)
             f.write('\n')
     else:

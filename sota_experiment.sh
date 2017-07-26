@@ -34,8 +34,17 @@ if [[ ! -d predictions ]]; then
 	done;
 fi
 
-if [[ ! -d embeddings ]]; then
-	mkdir embeddings;
+if [[ ! -d models ]]; then
+	mkdir models;
+	for model in lstm bilstm cnn; do
+		mkdir models/$model
+		for dataset in sst_fine sst_binary opener sentube_auto sentube_tablets semeval; do
+			mkdir models/$model/$dataset;
+			for i in 1 2 3 4 5; do
+				mkdir models/$model/$dataset/run$i;
+			done;
+		done;
+	done;
 fi
 
 # Get embeddings
@@ -61,5 +70,7 @@ cd ..
 
 python3 bow.py -output results/results.txt
 python3 ave.py -emb embeddings/google.txt -output results/results.txt
-python3 retrofit.py -emb embeddings/retrofit.txt -output results/results.txt
-python3 joint.py -emb emeddings/sswe-u.txt -file_type tang -output results/results.txt
+python3 retrofit.py -emb embeddings/retrofit-600.txt -output results/results.txt
+python3 joint.py -emb embeddings/sswe-u-50.txt -file_type tang -output results/results.txt
+python3 lstm_bilstm.py -emb embeddings/wiki-600.txt -output results/results.txt
+python3 cnn.py -emb embeddings/wiki-600.txt -output results/results.txt

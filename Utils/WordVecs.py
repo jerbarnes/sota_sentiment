@@ -18,6 +18,12 @@ class WordVecs(object):
         (self.vocab_length, self.vector_size, self._matrix,
          self._w2idx, self._idx2w) = self._read_vecs(file)
 
+    def __contains__(self, y):
+        try:
+            return y in self._w2idx
+        except KeyError:
+            return False
+
     def __getitem__(self, y):
         try:
             return self._matrix[self._w2idx[y]]
@@ -25,7 +31,6 @@ class WordVecs(object):
             raise KeyError
         except IndexError:
             raise IndexError
-        
 
     def _read_vecs(self, file):
         """Assumes that the first line of the file is

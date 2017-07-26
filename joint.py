@@ -150,12 +150,12 @@ def print_results(file, out_file, file_type):
     if out_file:
         with open(out_file, 'a') as f:
             f.write('\n')
-            f.write('+++Tang-[max-min-ave]+SVM+++\n')
+            f.write('+++Joint+++\n')
             f.write(table)
             f.write('\n')
     else:
         print()
-        print('+++Tang-max-min-ave-+SVM+++')
+        print('+++Joint+++')
         print(table)
         
 def main(args):

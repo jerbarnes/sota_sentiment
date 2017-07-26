@@ -92,12 +92,12 @@ def test_embeddings(embedding_file, file_type):
                                      rep=ave_vecs)
 
     sentube_auto_dataset = General_Dataset('datasets/SenTube/auto',
-                                           None, rep=words,
+                                           vecs, rep=ave_vecs,
                                            binary=True,
                                            one_hot=False)
 
     sentube_tablets_dataset = General_Dataset('datasets/SenTube/tablets',
-                                              None, rep=words,
+                                              vecs, rep=ave_vecs,
                                               binary=True,
                                               one_hot=False)
 
@@ -153,12 +153,12 @@ def print_results(file, out_file, file_type):
     if out_file:
         with open(out_file, 'a') as f:
             f.write('\n')
-            f.write('+++Average word vectors with L2 regularized Logistic Regression+++\n')
+            f.write('+++Average word vectors+++\n')
             f.write(table)
             f.write('\n')
     else:
         print()
-        print('+++Average word vectors with L2 regularized Logistic Regression+++')
+        print('+++Average word vectors+++')
         print(table)
         
 def main(args):

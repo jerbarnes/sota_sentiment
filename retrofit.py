@@ -5,7 +5,6 @@ from Utils.Semeval_2013_Dataset import *
 from Utils.MyMetrics import *
 from Utils.WordVecs import *
 import numpy as np
-from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 import pickle
@@ -164,12 +163,12 @@ def print_results(file, out_file, file_type):
     if out_file:
         with open(out_file, 'a') as f:
             f.write('\n')
-            f.write('+++Retrofitted vectors with L2 regularized Logistic Regression+++\n')
+            f.write('+++Retrofit+++\n')
             f.write(table)
             f.write('\n')
     else:
         print()
-        print('+++Average word vectors with L2 regularized Logistic Regression+++')
+        print('+++Retrofit+++')
         print(table)
         
 def main(args):
@@ -178,7 +177,7 @@ def main(args):
     parser.add_argument('-emb', help='location of embeddings', 
         default='embeddings/retrofit-300.txt')
     parser.add_argument('-file_type', help='glove style embeddings or word2vec style: default is w2v',
-    	default='Glove')
+    	default='word2vec')
     parser.add_argument('-output', help='output file for results', default='./results.txt')
     parser.add_argument('-printout', help='instead of printing to file, print to sysout',
                         type=bool, default=False)

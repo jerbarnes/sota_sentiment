@@ -28,7 +28,8 @@ Jeremy Barnes, Roman Klinger, and Sabine Schulte im Walde. 2017. **Assessing Sta
 2. tabulate ```pip install tabulate```
 3. sklearn  ```pip install -U scikit-learn```
 4. Keras with Theano backend (could work with Tensorflow, but it hasn't been tested)
-5. [Twitter NLP](https://github.com/aritter/twitter_nlp) (included)
+5. [H5py](http://docs.h5py.org/en/latest/build.html)
+6. [Twitter NLP](https://github.com/aritter/twitter_nlp) (included)
 
 ### Data you need
 1. Word embeddings ([available here](http://www.ims.uni-stuttgart.de/forschung/ressourcen/experiment-daten/sota-sentiment.html))
@@ -38,11 +39,19 @@ Jeremy Barnes, Roman Klinger, and Sabine Schulte im Walde. 2017. **Assessing Sta
 
 ### Running the program
 
-make sure that sota_experiment is executable and run the following command:
-```./sota_experiment.sh```
+If you want to reproduce the best results for each model reported in the paper, simply clone the repository and run the experiment script:
+
+```
+git clone https://github.com/jbarnesspain/sota_sentiment.git
+cd sota_sentiment
+chmod +x sota_experiment.sh
+./sota_experiment.sh
+```
 
 ### Output
+
 the results will be printed to results/results.txt
+
 the predictions will be kept in /predictions
 
 ### Reference
