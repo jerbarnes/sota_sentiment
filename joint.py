@@ -8,7 +8,7 @@ from Utils.WordVecs import *
 from Utils.Representations import *
 from Utils.Datasets import *
 from Utils.Semeval_2013_Dataset import *
-from sklearn.svm import LinearSVC
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 
 
@@ -36,7 +36,7 @@ def get_best_C(Xtrain, ytrain, Xdev, ydev):
         sys.stdout.write('\rRunning cross-validation: {0} of {1}'.format(i+1, len(test_cs)))
         sys.stdout.flush()
 
-        clf = LinearSVC(C=c)
+        clf = LogisticRegression(C=c)
         h = clf.fit(Xtrain, ytrain)
         pred = clf.predict(Xdev)
         if len(labels) == 2:
@@ -119,7 +119,7 @@ def test_embeddings(embedding_file, file_type):
                                        Xdev, dataset._ydev)
 
 
-        clf = LinearSVC(C=best_C)
+        clf = LogisticRegression(C=best_C)
         h = clf.fit(Xtrain, dataset._ytrain)
         pred = clf.predict(Xtest)
         predictions_file = "predictions/joint/" + name + '/pred.txt'
