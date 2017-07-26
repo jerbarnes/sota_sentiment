@@ -3,6 +3,7 @@
 Jeremy Barnes [jeremy.barnes@upf.edu] / [barnesjy@ims.uni-stuttgart.de]
 
 This experiment runs the best models with the best embeddings as described in the following paper:
+
 Jeremy Barnes, Roman Klinger, and Sabine Schulte im Walde. 2017. **Assessing State-of-the-art Sentiment Models on State-of-the-art Sentiment Datasets**. In *Proceedings of the 8th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis*.
 
 ## Models
