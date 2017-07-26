@@ -93,7 +93,7 @@ def test_embeddings(embedding_file, file_type):
                                               binary=True,
                                               one_hot=False)
 
-    semeval_dataset = Semeval_Dataset('datasets/twitter',
+    semeval_dataset = Semeval_Dataset('datasets/semeval',
                                                 vecs._w2idx, rep=words,
                                                 one_hot=False)
 

@@ -59,7 +59,7 @@ def test():
                                               binary=True,
                                               one_hot=False)
 
-    semeval_dataset = Semeval_Dataset('datasets/twitter',
+    semeval_dataset = Semeval_Dataset('datasets/semeval',
                                                 None, rep=words,
                                                 one_hot=False)
 
