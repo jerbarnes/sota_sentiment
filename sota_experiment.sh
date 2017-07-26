@@ -14,6 +14,7 @@ If you use the code or resources, please cite the paper.
 
 
 # Setup Directories
+# =================
 
 if [[ ! -d results ]]; then
 	mkdir results;
@@ -48,18 +49,25 @@ if [[ ! -d models ]]; then
 fi
 
 # Get embeddings
+# ==============
 cd embeddings
 
 # Duyu Tang's Twitter-specific Sentiment Embeddings
-# wget http://ir.hit.edu.cn/~dytang/paper/sswe/embedding-results.zip
-# unzip embedding-results.zip
+wget http://ir.hit.edu.cn/~dytang/paper/sswe/embedding-results.zip
+unzip - p embedding-results.zip embedding-results/sswe-u.txt > sswe-u.txt
 rm embedding-results.zip
-rm embedding-results/sswe-h.txt
-rm embedding-results/sswe-r.txt
-mv embedding-results/sswe-u.txt .
-rm -r embedding-results
 cd ..
 
+# Get available datasets
+# ======================
+cd datasets
+
+# Stanford Sentiment Treebank
+wget https://nlp.stanford.edu/sentiment/trainDevTestTrees_PTB.zip
+unzip trainDevTestTrees_PTB.zip
+mv trees stanford_sentanalysis
+
+cd ..
 
 # Get Wikipedia, Google and Retrofit embeddings
 # Currently, download them and add them manually
@@ -67,10 +75,12 @@ cd ..
 
 
 # Run Experiments
+# ===============
 
 python3 bow.py -output results/results.txt
 python3 ave.py -emb embeddings/google.txt -output results/results.txt
 python3 retrofit.py -emb embeddings/retrofit-600.txt -output results/results.txt
-python3 joint.py -emb embeddings/sswe-u-50.txt -file_type tang -output results/results.txt
+python3 joint.py -emb embeddings/sswe-u.txt -file_type tang -output results/results.txt
 python3 lstm_bilstm.py -emb embeddings/wiki-600.txt -output results/results.txt
+python3 lstm_bilstm.py -emb embeddings/wiki-600.txt -bi True -output results/results.txt
 python3 cnn.py -emb embeddings/wiki-600.txt -output results/results.txt

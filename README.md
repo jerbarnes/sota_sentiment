@@ -16,7 +16,8 @@ Jeremy Barnes, Roman Klinger, and Sabine Schulte im Walde. 2017. **Assessing Sta
 7. CNN
 
 ## Datasets
-1. and 2. [Stanford Sentiment Treebank](http://aclweb.org/anthology/D/D13/D13-1170.pdf) - fine-grained and binary
+1. [Stanford Sentiment Treebank](http://aclweb.org/anthology/D/D13/D13-1170.pdf) - fine-grained
+2. [Stanford Sentiment Treebank](http://aclweb.org/anthology/D/D13/D13-1170.pdf) - binary
 3. [OpeNER](http://journal.sepln.org/sepln/ojs/ojs/index.php/pln/article/view/4891)
 4. [SenTube Auto](https://ikernels-portal.disi.unitn.it/projects/sentube/)
 5. [SenTube Tablets](https://ikernels-portal.disi.unitn.it/projects/sentube/)

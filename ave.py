@@ -15,7 +15,7 @@ def print_prediction(file, prediction):
         for line in prediction:
             out.write(str(line) + '\n')
 
-def get_best_C(Xtrain, ytrain, Xdev, ydev):
+def get_best_C(dataset):
     """
     Find the best parameters on the dev set.
     """
@@ -35,12 +35,12 @@ def get_best_C(Xtrain, ytrain, Xdev, ydev):
         sys.stdout.flush()
 
         clf = LogisticRegression(C=c)
-        h = clf.fit(Xtrain, ytrain)
-        pred = clf.predict(Xdev)
+        h = clf.fit(dataset._Xtrain, dataset._ytrain)
+        pred = clf.predict(dataset._Xdev)
         if len(labels) == 2:
-            dev_f1 = f1_score(ydev, pred, pos_label=1)
+            dev_f1 = f1_score(dataset._ydev, pred, pos_label=1)
         else:
-            dev_f1 = f1_score(ydev, pred, labels=labels, average='micro')
+            dev_f1 = f1_score(dataset._ydev, pred, labels=labels, average='micro')
         if dev_f1 > best_f1:
             best_f1 = dev_f1
             best_c = c
@@ -117,38 +117,47 @@ def test_embeddings(embedding_file, file_type):
     for name, dataset in zip(names, datasets):
         print('Testing vectors on {0}...'.format(name))
 
-        
-        # Test classifier
-        best_c, best_f1 = get_best_C(dataset._Xtrain, dataset._ytrain,
-                                     dataset._Xdev, dataset._ydev)
+        # Get best parameters
+        best_c, best_f1 = get_best_C(dataset)
 
+        # Get predictions
         classifier = LogisticRegression(C=best_c)
         history = classifier.fit(dataset._Xtrain, dataset._ytrain)
         pred = classifier.predict(dataset._Xtest)
-        predictions_file = "predictions/ave/" + name +'/pred.txt'
+        predictions_file = "predictions/ave/" + name + '/pred.txt'
         print_prediction(predictions_file, pred)
-        
+
+        # Get results
         labels = sorted(set(dataset._ytrain))
         if len(labels) == 2:
             average = 'binary'
         else:
             average = 'micro'
-        mm = MyMetrics(dataset._ytest, pred, labels=labels, average=average, one_hot=False)
+        mm = MyMetrics(dataset._ytest, pred, labels=labels,
+                       average=average, one_hot=False)
         acc, precision, recall, f1 = mm.get_scores()
         results.append([acc, precision, recall, f1])
-    
+
+    # Add overall results
     results.append(list(np.array(results).mean(axis=0)))
     names.append('overall')
-    
+
     return names, results, dim
 
 
 def print_results(file, out_file, file_type):
+    """
+    file:       word embedding file
+    out_file:   if provided, where to write results
+    file_type:  word2vec, glove, tang, or bin
+    """
 
     names, results, dim = test_embeddings(file, file_type)
 
     table_data = [[name] + result for name, result in zip(names, results)]
-    table = tabulate.tabulate(table_data, headers=['dataset', 'acc', 'prec', 'rec', 'f1'], tablefmt='simple', floatfmt='.3f')
+    table = tabulate.tabulate(table_data,
+                              headers=['dataset', 'acc', 'prec', 'rec', 'f1'],
+                              tablefmt='simple', floatfmt='.3f')
 
     if out_file:
         with open(out_file, 'a') as f:
