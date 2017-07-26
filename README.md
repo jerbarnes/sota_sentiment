@@ -6,7 +6,7 @@ This experiment runs the best models with the best embeddings
 from our work in Barnes et al, 2017. We test 7 different
 models on 6 datasets.
 
-# Models
+## Models
 1. Bag-of-Words + L2 regularized Logistic Regression
 2. Averaged Embeddings + L2 regularized Logistic Regression
 3. Retrofitted Embeddings + L2 regularized Logistic Regression
@@ -15,7 +15,7 @@ models on 6 datasets.
 6. BiLSTM
 7. CNN
 
-# Datasets
+## Datasets
 1. and 2. [Stanford Sentiment Treebank](http://aclweb.org/anthology/D/D13/D13-1170.pdf) - fine-grained and binary
 3. [OpeNER](http://journal.sepln.org/sepln/ojs/ojs/index.php/pln/article/view/4891)
 4. [SenTube Auto](https://ikernels-portal.disi.unitn.it/projects/sentube/)
