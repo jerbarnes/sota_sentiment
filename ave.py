@@ -22,7 +22,7 @@ def get_best_C(dataset):
     best_f1 = 0
     best_c = 0
 
-    labels = sorted(set(ytrain))
+    labels = sorted(set(dataset._ytrain))
 
     test_cs = [0.001, 0.003, 0.006, 0.009,
                    0.01,  0.03,  0.06,  0.09,
