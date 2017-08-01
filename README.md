@@ -34,17 +34,19 @@ Jeremy Barnes, Roman Klinger, and Sabine Schulte im Walde. 2017. **Assessing Sta
 
 ### Data you need
 1. Word embeddings ([available here](http://www.ims.uni-stuttgart.de/forschung/ressourcen/experiment-daten/sota-sentiment.html))
-	- Download and unzip them in directory /embeddings
+	- Download and unzip them in directory /sota_sentiment
 2. Datasets 	   (provided)
 
 
 ### Running the program
 
-If you want to reproduce the best results for each model reported in the paper, simply clone the repository and run the experiment script:
+If you want to reproduce the best results for each model reported in the paper, simply clone the repository, download the word embeddings and unzip them, and run the experiment script:
 
 ```
 git clone https://github.com/jbarnesspain/sota_sentiment.git
 cd sota_sentiment
+wget http://www2.ims.uni-stuttgart.de/data/sota_sentiment/embeddings.zip
+unzip embeddings.zip
 chmod +x sota_experiment.sh
 ./sota_experiment.sh
 ```
