@@ -20,7 +20,7 @@ def print_prediction(file, prediction):
 def get_dev_params(dataset_name, outfile, bi,
                    Xtrain, ytrain, Xdev, ydev, vecs):
 
-    
+
     # If you have already run the dev experiment, just get results
     if os.path.isfile(outfile):
         with open(outfile) as out:
@@ -95,7 +95,7 @@ def get_dev_params(dataset_name, outfile, bi,
                 json.dump(dev_results, out)
 
     return best_dim, best_dropout, best_epoch, best_f1
-    
+
 
 def add_unknown_words(wordvecs, vocab, min_df=1, dim=50):
     """
@@ -134,7 +134,7 @@ def create_LSTM(wordvecs, lstm_dim=300, output_dim=2, dropout=.5,
     """
 
     model = Sequential()
-    if weights != None:
+    if isinstance(weights, np.ndarray):
         model.add(Embedding(len(wordvecs)+1,
             len(wordvecs['the']),
             weights=[weights],
@@ -159,13 +159,13 @@ def create_LSTM(wordvecs, lstm_dim=300, output_dim=2, dropout=.5,
 def create_BiLSTM(wordvecs, lstm_dim=300, output_dim=2, dropout=.5,
                 weights=None, train=True):
     model = Sequential()
-    if weights != None:
-        model.add(Embedding(len(wordvecs)+1,
+    if isinstance(weights, np.ndarray):
+        model.add(Embedding(len(wordvecs._w2idx),
             len(wordvecs['the']),
             weights=[weights],
                     trainable=train))
     else:
-        model.add(Embedding(len(wordvecs)+1,
+        model.add(Embedding(len(wordvecs._w2idx)+1,
             len(wordvecs['the']),
                     trainable=train))
     model.add(Dropout(dropout))
@@ -220,7 +220,7 @@ def test_embeddings(bi, embedding_file, file_type):
     OpeNER corpus (Agerri et al., 2016)
     Sentube Corpora (Severyn et al., 2016)
     Semeval 2016 twitter corpus - task A
-    
+
 
     """
 
@@ -237,7 +237,7 @@ def test_embeddings(bi, embedding_file, file_type):
                                             one_hot=True,
                                             binary=False,
                                             rep=words)
-    
+
 
     st_binary = Stanford_Sentiment_Dataset('datasets/stanford_sentanalysis',
                                             None,
@@ -264,8 +264,8 @@ def test_embeddings(bi, embedding_file, file_type):
     semeval_dataset = Semeval_Dataset('datasets/semeval',
                                                 None, rep=words,
                                                 one_hot=True)
-    
-    datasets = [st_fine, st_binary, opener_dataset, 
+
+    datasets = [st_fine, st_binary, opener_dataset,
                 sentube_auto_dataset, sentube_tablets_dataset, semeval_dataset]
 
     names = ['sst_fine', 'sst_binary', 'opener',
@@ -278,7 +278,7 @@ def test_embeddings(bi, embedding_file, file_type):
 
     for name, dataset in zip(names, datasets):
         print('Testing on {0}...'.format(name))
-        
+
         max_length = 0
         vocab = {}
         for sent in list(dataset._Xtrain) + list(dataset._Xdev) + list(dataset._Xtest):
@@ -302,7 +302,7 @@ def test_embeddings(bi, embedding_file, file_type):
 
         dataset = convert_dataset(dataset, word_idx_map, max_length)
 
-        
+
         output_dim = dataset._ytest.shape[1]
 
         """
@@ -316,7 +316,7 @@ def test_embeddings(bi, embedding_file, file_type):
         best_dim, best_dropout, best_epoch, best_f1 = get_dev_params(name, dev_params_file, bi,
                    dataset._Xtrain, dataset._ytrain, dataset._Xdev, dataset._ydev, wordvecs)
 
-        
+
 
         """
         Test model 5 times and get averages and std dev.
@@ -333,7 +333,7 @@ def test_embeddings(bi, embedding_file, file_type):
             else:
                 checkpoint = ModelCheckpoint('models/lstm/' + name + '/run'+ str(i+1)+'/weights.{epoch:03d}-{val_acc:.4f}.hdf5', monitor='val_acc', verbose=1, save_best_only=True, mode='auto')
                 clf = create_LSTM(wordvecs, best_dim, output_dim, best_dropout, weights=W, train=train)
-                
+
             h = clf.fit(dataset._Xtrain, dataset._ytrain, validation_data=[dataset._Xdev, dataset._ydev],
                         epochs=best_epoch, verbose=1, callbacks=[checkpoint])
 
@@ -343,7 +343,7 @@ def test_embeddings(bi, embedding_file, file_type):
             else:
                 base_dir = 'models/lstm/' + name + '/run'+str(i+1)
                 weights = os.listdir(base_dir)
-            
+
             best_val = 0
             best_weights = ''
             for weight in weights:
@@ -366,7 +366,7 @@ def test_embeddings(bi, embedding_file, file_type):
             print_prediction(prediction_file, classes)
             with open(w2idx_file, 'wb') as out:
                 pickle.dump(word_idx_map, out)
-            
+
             labels = sorted(set(dataset._ytrain.argmax(1)))
             if len(labels) == 2:
                 average = 'binary'
@@ -378,22 +378,22 @@ def test_embeddings(bi, embedding_file, file_type):
 
 
 
-        # Get the average and std deviation over 10 runs with 10 random seeds    
+        # Get the average and std deviation over 10 runs with 10 random seeds
         dataset_results = np.array(dataset_results)
-        ave_results = dataset_results.mean(axis=0) 
+        ave_results = dataset_results.mean(axis=0)
         std_results = dataset_results.std(axis=0)
         print(u'acc: {0:.3f} \u00B1{1:.3f}'.format(ave_results[0], std_results[0]))
         print(u'prec: {0:.3f} \u00B1{1:.3f}'.format(ave_results[1], std_results[1]))
         print(u'recall: {0:.3f} \u00B1{1:.3f}'.format(ave_results[2], std_results[2]))
         print(u'f1: {0:.3f} \u00B1{1:.3f}'.format(ave_results[3], std_results[3]))
-        
+
         results.append(ave_results)
         std_devs.append(std_results)
 
     results.append(list(np.array(results).mean(axis=0)))
     std_devs.append(list(np.array(std_devs).mean(axis=0)))
     names.append('overall')
-    
+
     return names, results, std_devs, dim
 
 
@@ -421,12 +421,12 @@ def print_results(bi, file, out_file, file_type):
         else:
             print('LSTM')
         print(table)
-        
+
 def main(args):
     parser = argparse.ArgumentParser(
         description='test embeddings on a suite of datasets')
     parser.add_argument('-bi', default=False, type=bool)
-    parser.add_argument('-emb', help='location of embeddings', 
+    parser.add_argument('-emb', help='location of embeddings',
         default='embeddings/wikipedia-sg-50-window10-sample1e-4-negative5.txt')
     parser.add_argument('-file_type', help='glove style embeddings or word2vec style: default is w2v',
         default='word2vec')
