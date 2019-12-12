@@ -160,12 +160,12 @@ def create_BiLSTM(wordvecs, lstm_dim=300, output_dim=2, dropout=.5,
                 weights=None, train=True):
     model = Sequential()
     if isinstance(weights, np.ndarray):
-        model.add(Embedding(len(wordvecs._w2idx),
+        model.add(Embedding(len(wordvecs)+1,
             len(wordvecs['the']),
             weights=[weights],
                     trainable=train))
     else:
-        model.add(Embedding(len(wordvecs._w2idx)+1,
+        model.add(Embedding(len(wordvecs)+1,
             len(wordvecs['the']),
                     trainable=train))
     model.add(Dropout(dropout))
